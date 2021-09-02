@@ -26,7 +26,7 @@ from typing import Tuple, Optional
 
 import torch
 from torch import Tensor
-from torch.nn.modules.linear import _LinearWithBias
+#from torch.nn.modules.linear import _LinearWithBias
 from torch.nn.init import xavier_uniform_
 from torch.nn.init import constant_
 from torch.nn.init import xavier_normal_
@@ -44,10 +44,7 @@ from torch.nn.modules.utils import _single, _pair, _triple, _list_with_default
 from torch.nn import grad
 from torch import _VF
 from torch._jit_internal import boolean_dispatch, List, Optional, _overload, Tuple
-if float(torch.__version__[:3]) < 1.7:
-    from torch._overrides import has_torch_function, handle_torch_function
-else:
-    from torch.overrides import has_torch_function, handle_torch_function
+from torch.overrides import has_torch_function, handle_torch_function
 Tensor = torch.Tensor
 
 from torch.nn.functional import linear, pad, softmax, dropout
@@ -90,7 +87,7 @@ class MultiheadAttention(Module):
         self.head_dim = embed_dim // num_heads
         assert self.head_dim * num_heads == self.embed_dim, "embed_dim must be divisible by num_heads"
 
-        self.out_proj = _LinearWithBias(vdim, vdim)
+        self.out_proj = nn.Linear(vdim, vdim, bias=True)#_LinearWithBias(vdim, vdim)
 
         self.in_proj_bias = None
         self.in_proj_weight = None
